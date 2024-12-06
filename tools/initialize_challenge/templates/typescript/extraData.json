@@ -1,0 +1,11 @@
+{
+  "config": {
+    "day": 0,
+    "language": "",
+    "year": 0,
+    "timestamp": ""
+  },
+  "data": {
+    "example": "This object is reserved for solution-specific data"
+  }
+}

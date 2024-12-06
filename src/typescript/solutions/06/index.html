@@ -1,0 +1,98 @@
+<html lang="urdu">
+  <head>
+    <title>AOC 6</title>
+    <meta charset="utf-8" />
+    <style>
+        body {
+            font-family: "Noto Sans Mono", monospace;
+        }
+        </style>
+</head>
+    
+  <body id="container"></body>
+  <script type="module">
+    const DIRECTIONS = {
+        ">": {y:0, x:1, rightDir: 'v'},
+        "<": {y:0, x: -1, rightDir: '^'},
+        "^": {y: -1, x:0, rightDir: '>'},
+        "v": {y:1, x:0, rightDir: '<'}
+    }
+    //['^', '>', 'v', '<'];
+
+    // read input
+    const input = await fetch('./input.txt').then((r) => r.text());
+
+    // process input (build map)
+    const rows = input.trim().split('\n').map((row) => row.trim());
+
+    // charArray[y][x]
+    const gameMap = rows.map(row => row.split(''));
+
+    const character = {y: 0, x:0, direction: "^"};
+
+    // find initial location
+    for (let y = 0; y < gameMap.length; y++){
+        for(let x = 0; x < gameMap[y].length; x++) {
+            if (gameMap[y][x] === '^') {
+                character.y = y;
+                character.x = x;
+            }
+        }
+    }
+
+    // start simulation
+    const simulateStep = () => {
+        const stepDirection = DIRECTIONS[character.direction];
+
+        const targetY = character.y + stepDirection.y;
+        const targetX = character.x + stepDirection.x;
+
+        const targetBlock = gameMap[targetY]?.[targetX];
+
+        if (targetBlock === '.') {
+            gameMap[character.y][character.x] = "X";
+            character.y = targetY;
+            character.x = targetX;
+            gameMap[targetY][targetX] = character.direction;
+        } else if (targetBlock === 'X') {
+            gameMap[character.y][character.x] = "X";
+            character.y = targetY;
+            character.x = targetX;
+            gameMap[targetY][targetX] = character.direction;
+        } else if (targetBlock === "#") {
+            character.direction = stepDirection.rightDir;
+        } else if (typeof targetBlock === 'undefined') {
+            gameMap[character.y][character.x] = "X";
+            calculateAndPrintResult(gameMap);
+            return;
+        }
+
+        // window.document.body.innerText = gameMap.map(row => row.join('')).join('\n')
+
+        //requestAnimationFrame(() => {
+            simulateStep();
+        //});
+    }
+
+    simulateStep();
+
+    // read target
+    function calculateAndPrintResult(gameMap) {
+        const distinctPositionCount = gameMap
+            .map((row) => row.filter(c => c === "X").length).reduce((a,b) => a+b);
+        
+        const allXPositions = [];
+        
+        for (let y = 0; y < gameMap.length; y++){
+        for(let x = 0; x < gameMap[y].length; x++) {
+            if (gameMap[y][x] === 'X') {
+                allXPositions.push({y,x});
+            }
+        }
+
+        console.log(allXPositions)
+    }
+    }
+
+  </script>
+</html>
