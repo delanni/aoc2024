@@ -9,6 +9,7 @@ export interface GeneratorConfig {
   year: number;
   timestamp: string;
   solutionRoot: string;
+  shouldFetchInput?: boolean;
 }
 
 export const getProjectRoot = (): string =>
