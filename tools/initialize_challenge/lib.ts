@@ -10,6 +10,7 @@ export interface GeneratorConfig {
   timestamp: string;
   solutionRoot: string;
   shouldFetchInput?: boolean;
+  challengeUrl?: string;
 }
 
 export const getProjectRoot = (): string =>
@@ -69,7 +70,11 @@ export async function copyTemplateFiles(config: GeneratorConfig): Promise<void> 
           JSON.stringify(
             {
               config,
-              data: {}, // Reserved for solution-specific data
+              data: {
+                challengeUrl:
+                  config.challengeUrl ||
+                  `https://adventofcode.com/${config.year}/day/${config.day}`,
+              },
             },
             null,
             2,

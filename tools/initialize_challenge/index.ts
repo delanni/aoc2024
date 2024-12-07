@@ -67,6 +67,7 @@ async function promptForConfig(): Promise<GeneratorConfig> {
     timestamp: new Date().toISOString(),
     solutionRoot,
     shouldFetchInput,
+    challengeUrl: `https://adventofcode.com/${year}/day/${day}`,
   };
 }
 
