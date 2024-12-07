@@ -8,16 +8,13 @@ import * as tools from '#/lib/tools';
 const input = fs.readFileSync(path.join(__dirname, 'input.txt'), 'utf-8');
 const extraData = fs.readFileSync(path.join(__dirname, 'extraData.json'), 'utf-8');
 
-async function prepare() {
-}
+async function prepare() {}
 
-async function solution1(data: Awaited<ReturnType<typeof prepare>>) {
-}
+async function solution1(data: Awaited<ReturnType<typeof prepare>>) {}
 
-async function solution2(data: Awaited<ReturnType<typeof prepare>>) {
-}
+async function solution2(data: Awaited<ReturnType<typeof prepare>>) {}
 
-async function main(part: string) {
+export default async function main(part: string) {
   const data = await tools.time(prepare, 'prepare');
 
   if (part === '1') {
@@ -29,11 +26,13 @@ async function main(part: string) {
   }
 }
 
-main(process.argv[2])
-  .then(() => {
-    process.exit(0);
-  })
-  .catch((err) => {
-    console.error(err);
-    process.exit(1);
-  });
+if (require.main === module) {
+  main(process.argv[2])
+    .then(() => {
+      process.exit(0);
+    })
+    .catch((err) => {
+      console.error(err);
+      process.exit(1);
+    });
+}
