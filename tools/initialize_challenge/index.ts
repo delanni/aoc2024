@@ -8,22 +8,7 @@ import {
 } from './lib';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as dotenv from 'dotenv';
-
-async function fetchInput(day: number, year: number): Promise<string> {
-  const { default: fetch } = await import('node-fetch');
-  const response = await fetch(`https://adventofcode.com/${year}/day/${day}/input`, {
-    headers: {
-      Cookie: `session=${process.env.AOC_SESSION}`,
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(`Failed to fetch input: ${response.statusText}`);
-  }
-
-  return response.text();
-}
+import { fetchInput, fetchTask } from './fetchers';
 
 async function promptForConfig(): Promise<GeneratorConfig> {
   const templates = await getAvailableTemplates();
@@ -55,9 +40,9 @@ async function promptForConfig(): Promise<GeneratorConfig> {
     default: suggestedPath,
   });
 
-  const shouldFetchInput = await confirm({
-    message: 'Would you like to fetch the input for this challenge?',
-    default: true,
+  const downloadInput = await confirm({
+    message: 'Would you like to fetch the input and task for this challenge?',
+    default: false,
   });
 
   return {
@@ -66,7 +51,7 @@ async function promptForConfig(): Promise<GeneratorConfig> {
     year: parseInt(year),
     timestamp: new Date().toISOString(),
     solutionRoot,
-    shouldFetchInput,
+    downloadInput,
     challengeUrl: `https://adventofcode.com/${year}/day/${day}`,
   };
 }
@@ -74,12 +59,11 @@ async function promptForConfig(): Promise<GeneratorConfig> {
 async function main() {
   try {
     console.log('🎄 Advent of Code Solution Generator 🎄\n');
-    dotenv.config();
 
     const config = await promptForConfig();
     await copyTemplateFiles(config);
 
-    if (config.shouldFetchInput) {
+    if (config.downloadInput) {
       if (!process.env.AOC_SESSION) {
         console.error('Please set AOC_SESSION in .env file to fetch inputs');
         process.exit(1);
@@ -92,6 +76,16 @@ async function main() {
         console.log(`Successfully wrote input to ${inputFile}`);
       } catch (error: any) {
         console.error('Error fetching input:', error.message);
+        process.exit(1);
+      }
+
+      try {
+        const task = await fetchTask(config.day, config.year);
+        const taskFile = path.join(config.solutionRoot, 'task.txt');
+        fs.writeFileSync(taskFile, task.trimEnd());
+        console.log(`Successfully wrote task to ${taskFile}`);
+      } catch (error: any) {
+        console.error('Error fetching task:', error.message);
         process.exit(1);
       }
     }

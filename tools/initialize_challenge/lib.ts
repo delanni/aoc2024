@@ -9,7 +9,7 @@ export interface GeneratorConfig {
   year: number;
   timestamp: string;
   solutionRoot: string;
-  shouldFetchInput?: boolean;
+  downloadInput?: boolean;
   challengeUrl?: string;
 }
 

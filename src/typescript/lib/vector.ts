@@ -1,3 +1,5 @@
+import { highestCommonDenominator } from '#/lib/combinatorics';
+
 export default class Vector {
   readonly $tag = 'VECTOR';
   x: number;
@@ -38,6 +40,21 @@ export default class Vector {
 
   clone(): Vector {
     return new Vector(this.x, this.y);
+  }
+
+  magnitude(): number {
+    return Math.sqrt(this.x * this.x + this.y * this.y);
+  }
+
+  normalize(): Vector {
+    const mag = this.magnitude();
+    return new Vector(this.x / mag, this.y / mag);
+  }
+
+  simplify(): Vector {
+    const hcdOfCoords = highestCommonDenominator(Math.abs(this.x), Math.abs(this.y));
+
+    return new Vector(this.x / hcdOfCoords, this.y / hcdOfCoords);
   }
 
   toString(): string {

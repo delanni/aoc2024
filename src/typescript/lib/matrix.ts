@@ -29,6 +29,17 @@ export default class Matrix<T> {
     return this;
   }
 
+  forEach(fn: (row: number, col: number, value: T) => void) {
+    for (let i = 0; i < this.m; i++) {
+      for (let j = 0; j < this.n; j++) {
+        const value = this.get(i, j);
+        fn(i, j, value!);
+      }
+    }
+
+    return this;
+  }
+
   fromString(str: string, parser: RegExp, converter: (block: string) => T) {
     const globalRegExp = new RegExp(parser, 'g');
     const rows = str
@@ -42,6 +53,8 @@ export default class Matrix<T> {
         return newRow;
       });
     this._backingArray = rows;
+    this.m = this._backingArray.length;
+    this.n = this._backingArray[0].length;
 
     return this;
   }

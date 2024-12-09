@@ -12,3 +12,23 @@ export function generateAllVariations<T>(inputs: T[], length: number): Array<T[]
     });
   }
 }
+
+export function generateAllPairings<T>(inputSet: T[]): Array<[T, T]> {
+  const output: [T, T][] = [];
+  for (let i = 0; i < inputSet.length - 1; i++) {
+    for (let j = i + 1; j < inputSet.length; j++) {
+      output.push([inputSet[i], inputSet[j]]);
+    }
+  }
+  return output;
+}
+
+export function highestCommonDenominator(n1: number, n2: number) {
+  if (n1 === n2) {
+    return n1;
+  } else {
+    const bigger = Math.max(n1, n2);
+    const smaller = Math.min(n1, n2);
+    return highestCommonDenominator(bigger - smaller, smaller);
+  }
+}
