@@ -18,7 +18,7 @@ export async function fetchInput(day: number, year: number): Promise<string> {
   return response.text();
 }
 
-export async function fetchTask(day: number, year: number): Promise<string[] | null> {
+export async function fetchTasks(day: number, year: number): Promise<Array<string | null>> {
   const { default: fetch } = await import('node-fetch');
   dotenv.config();
 
@@ -30,7 +30,7 @@ export async function fetchTask(day: number, year: number): Promise<string[] | n
 
   if (!response.ok) {
     console.error(`Failed to fetch task: ${response.statusText}`);
-    return null;
+    return [null, null];
   }
 
   try {
@@ -39,22 +39,26 @@ export async function fetchTask(day: number, year: number): Promise<string[] | n
     const dom = new JSDOM(textHtml);
     const taskArticles = dom?.window?.document?.querySelectorAll('article.day-desc');
 
-    if (taskArticles && taskArticles.length > 0) {
-      return Array.from(taskArticles)
-        .map((taskArticle) => taskArticle.textContent?.trim())
-        .filter<string>(isString);
+    if (!taskArticles || taskArticles.length === 0) {
+      console.warn('No tasks could be found in the DOM with $article.day-desc');
+      return [null, null];
     } else {
-      console.error('Cannot find articles in dom.');
-      return null;
+      const articles = Array.from(taskArticles);
+      return [articles[0]?.innerHTML?.trim() || null, articles[1]?.innerHTML?.trim() || null];
     }
   } catch (error: unknown) {
     if (error instanceof Error) {
       console.error('Error fetching task:', error.message);
     }
-    return null;
+    return [null, null];
   }
 }
 
-function isString(t: any): t is string {
-  return typeof t === 'string';
+export function hasConfig() {
+  dotenv.config();
+  if (process.env.AOC_SESSION) {
+    return true;
+  } else {
+    return false;
+  }
 }

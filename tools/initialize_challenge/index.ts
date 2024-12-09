@@ -8,7 +8,7 @@ import {
 } from './lib';
 import * as fs from 'fs';
 import * as path from 'path';
-import { fetchInput, fetchTask } from './fetchers';
+import { fetchInput, fetchTasks, hasConfig } from './fetchers';
 
 async function promptForConfig(): Promise<GeneratorConfig> {
   const templates = await getAvailableTemplates();
@@ -64,7 +64,7 @@ async function main() {
     await copyTemplateFiles(config);
 
     if (config.downloadInput) {
-      if (!process.env.AOC_SESSION) {
+      if (!hasConfig()) {
         console.error('Please set AOC_SESSION in .env file to fetch inputs');
         process.exit(1);
       }
@@ -80,9 +80,9 @@ async function main() {
       }
 
       try {
-        const task = await fetchTask(config.day, config.year);
-        const taskFile = path.join(config.solutionRoot, 'task.txt');
-        fs.writeFileSync(taskFile, task.trimEnd());
+        const [task1, task2] = await fetchTasks(config.day, config.year);
+        const taskFile = path.join(config.solutionRoot, 'task.md');
+        fs.writeFileSync(taskFile, [task1, task2].join('\n------\n'));
         console.log(`Successfully wrote task to ${taskFile}`);
       } catch (error: any) {
         console.error('Error fetching task:', error.message);
