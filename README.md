@@ -6,6 +6,10 @@ The following is a set of solutions for Advent of Code 2024, written by [Alex](h
 
 The solutions folder hosts the year's challenges, not inlcuding inputs, outputs or tasks.
 
+You'll find typescript solutions (after day 7) @ [./src/typescript/solutions](./src/typescript/solutions/).
+
+You'll find the early, javascript solutions (days 1-6) @ [./src/javascript/solutions](./src/javascript/solutions/)
+
 ## Tools
 
 The tools folder is a set of scripts/tools to help automate some mundane tasks re: solution management.
