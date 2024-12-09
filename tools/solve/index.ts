@@ -13,7 +13,10 @@ const DEFAULT_SOLUTIONS_DIR = path.join(root, 'src', 'typescript', 'solutions');
 const main = async () => {
   const solution = await select({
     message: 'Which solution do you want to run?',
-    choices: fs.readdirSync(DEFAULT_SOLUTIONS_DIR).map((n) => ({ value: n, name: n })),
+    choices: fs
+      .readdirSync(DEFAULT_SOLUTIONS_DIR)
+      .map((n) => ({ value: n, name: n }))
+      .reverse(),
   });
 
   const part = await select({
