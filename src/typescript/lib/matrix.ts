@@ -40,15 +40,16 @@ export default class Matrix<T> {
     return this;
   }
 
-  fromString(str: string, parser: RegExp, converter: (block: string) => T) {
+  fromString(str: string, parser: RegExp, converter: (block: string, r: number, c: number) => T) {
     const globalRegExp = new RegExp(parser, 'g');
     const rows = str
       .trim()
       .split('\n')
-      .map((row) => {
+      .map((row, rowIdx) => {
         const newRow = [];
+        let matchCount = 0;
         for (const block of row.matchAll(globalRegExp)) {
-          newRow.push(converter(block[0]));
+          newRow.push(converter(block[0], rowIdx, matchCount++));
         }
         return newRow;
       });

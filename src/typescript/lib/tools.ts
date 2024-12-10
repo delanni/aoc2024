@@ -41,3 +41,9 @@ export function times(n: number, fn: () => void) {
     fn();
   }
 }
+
+export function distinct<T>(array: T[]) {
+  return array.filter((el, idx) => {
+    return array.indexOf(el) === idx;
+  });
+}
