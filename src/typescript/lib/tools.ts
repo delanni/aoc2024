@@ -35,3 +35,9 @@ export const getProjectRoot: () => string = (() => {
     return root;
   };
 })();
+
+export function times(n: number, fn: () => void) {
+  while (n-- > 0) {
+    fn();
+  }
+}
