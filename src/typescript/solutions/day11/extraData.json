@@ -1,0 +1,14 @@
+{
+  "config": {
+    "day": 11,
+    "language": "typescript",
+    "year": 2024,
+    "timestamp": "2024-12-11T07:36:22.300Z",
+    "solutionRoot": "/Users/web/Git/aoc2024/src/typescript/solutions/day11",
+    "downloadInput": true,
+    "challengeUrl": "https://adventofcode.com/2024/day/11"
+  },
+  "data": {
+    "challengeUrl": "https://adventofcode.com/2024/day/11"
+  }
+}

@@ -14,14 +14,16 @@ async function promptForConfig(): Promise<GeneratorConfig> {
   const templates = await getAvailableTemplates();
   const root = getProjectRoot();
 
-  const day = await input({
-    message: 'Which day of Advent of Code?',
-    validate: (value: string) => {
-      const num = parseInt(value);
-      if (!isNaN(num) && num >= 1 && num <= 25) return true;
-      return 'Please enter a day between 1 and 25';
-    },
-  });
+  const day =
+    process.argv[2] ??
+    (await input({
+      message: 'Which day of Advent of Code?',
+      validate: (value: string) => {
+        const num = parseInt(value);
+        if (!isNaN(num) && num >= 1 && num <= 25) return true;
+        return 'Please enter a day between 1 and 25';
+      },
+    }));
 
   const language = await select({
     message: 'Which template would you like to use?',

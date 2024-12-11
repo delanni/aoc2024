@@ -11,21 +11,25 @@ const root = tools.getProjectRoot();
 const DEFAULT_SOLUTIONS_DIR = path.join(root, 'src', 'typescript', 'solutions');
 
 const main = async () => {
-  const solution = await select({
-    message: 'Which solution do you want to run?',
-    choices: fs
-      .readdirSync(DEFAULT_SOLUTIONS_DIR)
-      .map((n) => ({ value: n, name: n }))
-      .reverse(),
-  });
+  const solution =
+    process.argv[2] ??
+    (await select({
+      message: 'Which solution do you want to run?',
+      choices: fs
+        .readdirSync(DEFAULT_SOLUTIONS_DIR)
+        .map((n) => ({ value: n, name: n }))
+        .reverse(),
+    }));
 
-  const part = await select({
-    message: 'Which part do you want to run?',
-    choices: [
-      { value: '1', name: '1' },
-      { value: '2', name: '2' },
-    ],
-  });
+  const part =
+    process.argv[3] ??
+    (await select({
+      message: 'Which part do you want to run?',
+      choices: [
+        { value: '1', name: '1' },
+        { value: '2', name: '2' },
+      ],
+    }));
 
   const solutionPath = path.join(DEFAULT_SOLUTIONS_DIR, solution, 'solution');
 
