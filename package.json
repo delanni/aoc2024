@@ -10,7 +10,8 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,json,md}\"",
     "typecheck": "tsc --noEmit",
     "prepare": "husky install",
-    "generate": "ts-node --transpile-only tools/initialize_challenge/index.ts"
+    "generate": "ts-node --transpile-only tools/initialize_challenge/index.ts",
+    "fetch": "ts-node --transpile-only tools/fetch/index.ts"
   },
   "keywords": [
     "advent-of-code",
