@@ -1,4 +1,4 @@
-import { highestCommonDenominator } from '#/lib/combinatorics';
+import { greatestCommonDivisor } from '#/lib/combinatorics';
 
 export default class Vector {
   readonly $tag = 'VECTOR';
@@ -52,7 +52,7 @@ export default class Vector {
   }
 
   simplify(): Vector {
-    const hcdOfCoords = highestCommonDenominator(Math.abs(this.x), Math.abs(this.y));
+    const hcdOfCoords = greatestCommonDivisor(Math.abs(this.x), Math.abs(this.y));
 
     return new Vector(this.x / hcdOfCoords, this.y / hcdOfCoords);
   }

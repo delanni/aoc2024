@@ -23,12 +23,16 @@ export function generateAllPairings<T>(inputSet: T[]): Array<[T, T]> {
   return output;
 }
 
-export function highestCommonDenominator(n1: number, n2: number) {
+export function greatestCommonDivisor(n1: number, n2: number) {
   if (n1 === n2) {
     return n1;
   } else {
     const bigger = Math.max(n1, n2);
     const smaller = Math.min(n1, n2);
-    return highestCommonDenominator(bigger - smaller, smaller);
+    const fitsTimes = Math.floor(bigger / smaller);
+    if (bigger - fitsTimes * smaller === 0) {
+      return smaller;
+    }
+    return greatestCommonDivisor(bigger - fitsTimes * smaller, smaller);
   }
 }
