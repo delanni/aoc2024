@@ -47,3 +47,12 @@ export function distinct<T>(array: T[]) {
     return array.indexOf(el) === idx;
   });
 }
+
+export function groupBy<T, K extends { [key: string]: T }>(
+  groupingKey: keyof T,
+): (acc: K, el: T, idx: number) => K {
+  return (acc: any, el: T, _idx: number) => {
+    acc[el[groupingKey]] = el;
+    return acc;
+  };
+}

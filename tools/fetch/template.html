@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; line-height: 1.6; }
+    article { padding: 1em; }
+    pre { background: #f6f8fa; padding: 1em; border-radius: 6px; }
+    code { font-family: 'SF Mono', Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; }
+    .divider { border-top: 2px solid #e1e4e8; margin: 2em 0; }
+    .audio-player { margin: 1em 0; padding: 1em; background: #f6f8fa; border-radius: 6px; }
+    .audio-player audio { width: 100%; }
+    .audio-player p { margin: 0.5em 0; color: #586069; }
+  </style>
+</head>
+<body>
+  <article class="part1">
+    {{PART1}}
+    <div class="audio-player">
+      <p>Listen to Part 1:</p>
+      <audio controls>
+        <source src="task1.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+      </audio>
+    </div>
+  </article>
+  <div class="divider"></div>
+  <article class="part2">
+    {{PART2}}
+    <div class="audio-player">
+      <p>Listen to Part 2:</p>
+      <audio controls>
+        <source src="task2.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+      </audio>
+    </div>
+  </article>
+</body>
+</html>

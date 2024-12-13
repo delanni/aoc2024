@@ -1,0 +1,18 @@
++-+-+-+
+|A A A|
++-+ +-+    
+  |A|  o x o
++-+-+   +-+   
+|B B|  x|C|o o
++   +   + +-+
+|B B|  x|C C|x
++-+-+   +-+ +
+       ooo|C|x
+AA      +-+ +
+ AA    x|C C|x
+A       +-+-+
+AA     o x x o
+ ooox
+AAAAo
+AAAxx
+AA

@@ -40,7 +40,7 @@ function transformPebble(pebble: number): number[] {
 
 async function solution2(data: Awaited<ReturnType<typeof prepare>>) {
   const { pebbles } = data;
-  let otherSum = 0;
+  let totalPebbleCount = 0;
   // Store count per kind
   let pebbleLookupMap: {
     [pebbleNumber: string]: number;
@@ -48,7 +48,7 @@ async function solution2(data: Awaited<ReturnType<typeof prepare>>) {
 
   pebbles.forEach((n) => {
     pebbleLookupMap[n] = 1;
-    otherSum += 1;
+    totalPebbleCount += 1;
   });
 
   for (let i = 0; i < 75; i++) {
@@ -62,11 +62,10 @@ async function solution2(data: Awaited<ReturnType<typeof prepare>>) {
         const p2 = Number(_pebbleId.slice(_pebbleId.length / 2));
         newPebblesState[p1] = (newPebblesState[p1] || 0) + pebbleCount;
         newPebblesState[p2] = (newPebblesState[p2] || 0) + pebbleCount;
-        otherSum += pebbleCount;
+        totalPebbleCount += pebbleCount;
       } else if (pebbleId === 0) {
         newPebblesState[1] = (newPebblesState[1] || 0) + pebbleCount;
       } else {
-        // console.log(`Multiplying ${pebbleCount} many pebbles ${pebbleId} => ${2024*pebbleId}`);
         newPebblesState[pebbleId * 2024] = (newPebblesState[pebbleId * 2024] || 0) + pebbleCount;
       }
     });
@@ -74,9 +73,7 @@ async function solution2(data: Awaited<ReturnType<typeof prepare>>) {
     pebbleLookupMap = newPebblesState;
   }
 
-  const toolsSum = tools.sum(Object.values(pebbleLookupMap));
-  console.log({ toolsSum, otherSum });
-  return otherSum;
+  return totalPebbleCount;
 }
 
 export default async function main(part: string) {

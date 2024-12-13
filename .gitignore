@@ -7,3 +7,6 @@ node_modules/
 dist/
 **/solutions/**/input.txt
 **/solutions/**/task.md
+**/solutions/**/task*
+**/solutions/**/task.html
+
