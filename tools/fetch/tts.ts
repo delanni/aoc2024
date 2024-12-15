@@ -46,8 +46,12 @@ export async function selectVoice(): Promise<VoiceId> {
   });
 }
 
-function stripHtml(html: string): string {
+function stripHtml(html: string, deletePreformattedBlocks = false): string {
   const dom = new JSDOM(html);
+  if (deletePreformattedBlocks) {
+    const preBlocks = dom.window.document.querySelectorAll('pre');
+    preBlocks.forEach((block) => block.remove());
+  }
   return dom.window.document.body.textContent || '';
 }
 
@@ -59,8 +63,8 @@ export async function textToSpeech(
   const mergedOptions = { ...defaultOptions, ...options };
 
   try {
-    // Strip HTML tags and clean up the text for speech
-    const cleanText = stripHtml(text).replace(/\s+/g, ' ').trim();
+    // Strip HTML tags, and erase <pre> blocks to clean up the text for speech
+    const cleanText = stripHtml(text, true).replace(/\s+/g, ' ');
 
     const mp3 = await openai.audio.speech.create({
       model: mergedOptions.model,

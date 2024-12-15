@@ -149,18 +149,30 @@ async function handleTranslation(
   const translatedHtmlPath = path.join(setup.solutionDir, `task.${languageSuffix}.html`);
 
   console.log('Translating tasks...');
-  const translatedTask1 = task1.text ? await translateText(task1.text, targetLanguage) : null;
-  const translatedTask2 = task2.text ? await translateText(task2.text, targetLanguage) : null;
+  let translatedTask1;
+  let translatedTask2;
+  if (!fs.existsSync(translatedHtmlPath) || (await promptDelete(translatedHtmlPath))) {
+    translatedTask1 = task1.text ? await translateText(task1.text, targetLanguage) : null;
+    translatedTask2 = task2.text ? await translateText(task2.text, targetLanguage) : null;
 
-  // Write translated files
-  fs.writeFileSync(translatedMdPath, [translatedTask1, translatedTask2].join('\n------\n'));
-  const template = loadTemplate();
-  const translatedHtmlContent = generateTaskHtml(template, translatedTask1, translatedTask2);
-  fs.writeFileSync(translatedHtmlPath, translatedHtmlContent);
-
-  console.log('Translation complete!');
-  console.log(`Translated markdown saved in: ${translatedMdPath}`);
-  console.log(`Translated HTML saved in: ${translatedHtmlPath}`);
+    // Write translated files
+    fs.writeFileSync(
+      translatedMdPath,
+      [translatedTask1, translatedTask2].join('\n------<!--split-->\n'),
+    );
+    const template = loadTemplate();
+    const translatedHtmlContent = generateTaskHtml(template, translatedTask1, translatedTask2);
+    fs.writeFileSync(translatedHtmlPath, translatedHtmlContent);
+    console.log('Translation complete!');
+    console.log(`Translated markdown saved in: ${translatedMdPath}`);
+    console.log(`Translated HTML saved in: ${translatedHtmlPath}`);
+  } else {
+    [translatedTask1, translatedTask2] = fs
+      .readFileSync(translatedMdPath)
+      .toString()
+      .split('\n------<!--split-->\n');
+    console.log(`Translated files were already present`);
+  }
 
   return [
     { text: translatedTask1, language: targetLanguage },
@@ -222,6 +234,13 @@ async function writeOriginalTasks(
   const template = loadTemplate();
   const htmlContent = generateTaskHtml(template, task1, task2);
   fs.writeFileSync(setup.paths.taskHtml, htmlContent);
+}
+
+function promptDelete(path: string): Promise<boolean> {
+  return confirm({
+    message: `File already exists at ${path}. Overwrite?`,
+    default: false,
+  });
 }
 
 main();

@@ -11,7 +11,8 @@
     "typecheck": "tsc --noEmit",
     "prepare": "husky install",
     "generate": "ts-node --transpile-only tools/initialize_challenge/index.ts",
-    "fetch": "ts-node --transpile-only tools/fetch/index.ts"
+    "fetch": "ts-node --transpile-only tools/fetch/index.ts",
+    "serve": "ts-node --transpile-only tools/serve.ts"
   },
   "keywords": [
     "advent-of-code",
