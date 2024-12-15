@@ -37,7 +37,7 @@ export async function copyTemplateFiles(config: GeneratorConfig): Promise<void> 
       await fs.access(targetDir);
       // If we get here, the directory exists
       const shouldOverride = await confirm({
-        message: `⚠️ Directory ${targetDir} already exists. Do you want to override it?`,
+        message: `⚠️ Directory ${targetDir} already exists. Do you want to use this folder still?`,
         default: false,
       });
 
@@ -45,15 +45,13 @@ export async function copyTemplateFiles(config: GeneratorConfig): Promise<void> 
         console.log('❌ Operation cancelled');
         process.exit(0);
       } else {
-        console.log('⚠️ Overriding existing directory');
-        await fs.rm(targetDir, { recursive: true, force: true });
+        console.log('⚠️ Using existing directory');
+        // Create target directory
       }
     } catch {
       // Directory doesn't exist, which is fine
+      await fs.mkdir(targetDir, { recursive: true });
     }
-
-    // Create target directory
-    await fs.mkdir(targetDir, { recursive: true });
 
     // Read template directory
     const files = await fs.readdir(templateDir);
